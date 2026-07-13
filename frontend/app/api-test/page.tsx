@@ -1,20 +1,26 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function ApiTest() {
-    const [data, setData] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetch('http://localhost:4000/health')
-        .then((r) => r.json())
-        .then((d) => setData(JSON.stringify(d)))
-        .catch((e) => setError(e.message))
-        
-    }, []);
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/health');
+        const result = await response.json();
+        setData(JSON.stringify(result));
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
 
-    if(error) return <p>Error: {error}</p>;
-    if(!data) return <p>Loading...</p>;
-    return <p>API says: {data}</p>;
+    loadData();
+  }, []);
+
+  if (error) return <p>Error: {error}</p>;
+  if (!data) return <p>Loading...</p>;
+  return <p>API says: {data}</p>;
 }
