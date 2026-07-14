@@ -7,6 +7,7 @@ export default function ApiTest() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    
     const loadData = async () => {
       try {
         const response = await fetch('http://localhost:4000/health');

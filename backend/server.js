@@ -12,17 +12,16 @@ app.use(cors({
 app.use(express.json());
 
 // Health check route - a simple test to see if the server is alive
+
 app.get('/health', (req, res) => {
-    res.json({
-        status:"OK",
-        message: "Backend server is running!",
-    });
+  res.json({ status: 'ok', time: new Date().toISOString() });
 });
 
-// Start the server
+app.use('/api/products', require('./routes/products'));
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`API listening on http://localhost: ${PORT}`);
 });
 
 
