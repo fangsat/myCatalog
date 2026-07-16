@@ -2,26 +2,49 @@
 const express = require('express');
 const cors = require("cors");
 
+// ======================
+// 1. CREATE THE APP
+// ======================
 const app = express();
 
+
+
+// ======================
+// 2. ADD MIDDLEWARE
+// ======================
+// Middleware runs before routes and helps process requests
 app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-// This helps the server understand JSON data
+// This helps the server understand JSON data sent from frontend
 app.use(express.json());
 
-// Health check route - a simple test to see if the server is alive
 
+
+// ======================
+// 3. ROUTES / ENDPOINTS
+// ======================
+// Health check route - a simple test to see if the server is alive
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
 
+// Auth routes (register & login)
+const authRouter = require('./routes/auth');
+app.use('/api/auth', authRouter);
+
+// Products routes
 app.use('/api/products', require('./routes/products'));
 
+
+
+// ======================
+// 4. START THE SERVER
+// ======================
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`API listening on http://localhost: ${PORT}`);
+  console.log(`API listening on http://localhost:${PORT}`);
 });
 
 

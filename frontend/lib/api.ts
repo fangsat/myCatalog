@@ -8,7 +8,7 @@ export function getToken(): string | null{
 }
 
 export async function api(path: string, options: { method?:string ; body?: unknown} = {}){
-    const headers: Record<string, string> = {'Content-type': 'application/json'};
+    const headers: Record<string, string> = {'Content-Type': 'application/json'};
     const token = getToken();
     if (token) headers['Authorization'] = 'Bearer ' + token;
 
