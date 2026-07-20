@@ -47,6 +47,9 @@ router.post('/login', async (req,res) => {
         // token is one long string — the complete JWT. This string has three parts: header.payload.signature
 
         res.json({ token });
+
+
+        
     } catch (err){
         console.error(err);
         res.status(500).json({error: 'Login failed'});

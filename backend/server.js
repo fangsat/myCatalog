@@ -37,7 +37,8 @@ app.use('/api/auth', authRouter);
 // Products routes
 app.use('/api/products', require('./routes/products'));
 
-
+// Me routes
+app.use('/api/me', require('./routes/me'));
 
 // ======================
 // 4. START THE SERVER
