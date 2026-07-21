@@ -1,6 +1,7 @@
 // Backend server file
 const express = require('express');
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 
 // ======================
 // 1. CREATE THE APP
@@ -14,8 +15,12 @@ const app = express();
 // ======================
 // Middleware runs before routes and helps process requests
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:3000',
+    credentials: true
 }));
+
+
+app.use(cookieParser());
 
 // This helps the server understand JSON data sent from frontend
 app.use(express.json());

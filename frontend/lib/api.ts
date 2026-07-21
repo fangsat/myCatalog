@@ -1,5 +1,10 @@
 export const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
-export const AUTH_MODE : 'bearer' | 'cookie' = 'bearer';
+
+// local storage
+// export const AUTH_MODE : 'bearer' | 'cookie' = 'bearer';
+
+// httpOnly Cookie
+export const AUTH_MODE : 'bearer' | 'cookie' = 'cookie';
 
 export function getToken(): string | null{
     if (AUTH_MODE !== 'bearer') return null;

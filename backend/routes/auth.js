@@ -46,14 +46,23 @@ router.post('/login', async (req,res) => {
 
         // token is one long string — the complete JWT. This string has three parts: header.payload.signature
 
-        res.json({ token });
+        // CHANGED — local storage / bearer version:
+        //res.json({ token });
 
+        // res.cookie(name, value, options)
+        res.cookie('token', token, {httpOnly: true, sameSite: 'lax', maxAge: 24 * 60 * 60 * 1000});
+        res.json({ok: true});
 
-        
     } catch (err){
         console.error(err);
         res.status(500).json({error: 'Login failed'});
     }
+});
+
+
+router.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({ ok: true });
 });
 
 module.exports = router;
