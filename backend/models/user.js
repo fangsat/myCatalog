@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password_hash: DataTypes.STRING,
     name: DataTypes.STRING,
-    role: DataTypes.STRING
+    role: DataTypes.STRING,
+    deleted_at: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'User',
