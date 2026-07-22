@@ -1,3 +1,12 @@
+require('dotenv').config();
+
+const Sentry =require('@sentry/node');
+
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    sendDefaultPii: false,
+});
+
 // Backend server file
 const express = require('express');
 const cors = require("cors");
@@ -46,6 +55,8 @@ app.use('/api/products', require('./routes/products'));
 
 // Me routes
 app.use('/api/me', require('./routes/me'));
+
+Sentry.setupExpressErrorHandler(app);
 
 // ======================
 // 5. START THE SERVER
