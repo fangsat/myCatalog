@@ -13,8 +13,12 @@ export default function ApiTest() {
       try {
         const result = await api('/health');
         setData(JSON.stringify(result));
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error){
+            setError(err.message);
+        } else{
+            setError('An unknown error occurred');
+        }
       }
     };
 

@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 import Link from 'next/link';
 import { currentUser, logout } from "@/lib/auth";
 
+interface User {
+    id: number;
+    email: string;
+    name: string;
+    role: string;
+}
+
 export default function Header() {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {currentUser().then((u) => { setUser(u); setLoaded(true); } )}, []);

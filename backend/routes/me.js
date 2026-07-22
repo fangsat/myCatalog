@@ -6,7 +6,7 @@ router.get('/', requireAuth, async(req, res) => {
     try{
         const user = await User.findByPk(req.user.sub, { attributes : ['id', 'email', 'name', 'role'] })
 
-        if (!user || user.deleted_At){
+        if (!user || user.deleted_at){
             return res.status(401).json({error : 'Account Unavailable'});
         }
 

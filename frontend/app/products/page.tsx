@@ -4,8 +4,18 @@ import {useState, useEffect} from 'react';
 import {api} from '@/lib/api';
 import {formatIDR} from '@/lib/format';
 
+interface Product{
+    id: number;
+    name: string;
+    description: string;
+    base_price: number;
+    is_active: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export default function ProductsPage() {
-    const[products, setProducts] = useState <any[] | null>(null);
+    const[products, setProducts] = useState <Product[] | null>(null);
     const[error, setError] = useState <string | null>(null);
 
     // useEffect(() => {
@@ -19,8 +29,12 @@ export default function ProductsPage() {
             try {
                 const data = await api('/api/products');
                 setProducts(data);
-            } catch (e: any){
-                setError(e.message);
+            } catch (err: unknown){
+                if (err instanceof Error){
+                    setError(err.message);
+                } else {
+                    setError('An unknown error occured');
+                }
             };
         };
         loadProducts();
