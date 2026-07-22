@@ -33,7 +33,7 @@ app.use(express.json());
 // 4. ROUTES / ENDPOINTS
 // ======================
 // Health check route - a simple test to see if the server is alive
-app.get('/health', (req, res) => {
+app.get('/health', (req, res) => {{
   res.json({ status: 'ok', time: new Date().toISOString() });
 });
 
