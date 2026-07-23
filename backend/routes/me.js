@@ -5,10 +5,10 @@ const { User } = require('../models');
 
 router.get('/', requireAuth, asyncHandler(async(req, res) => {
 
-    const user = await User.findByPk(req.user.sub, { attributes : ['id', 'email', 'name', 'role', 'deleted_at'] });
+    const user = await User.findByPk(req.user.sub, { attributes : ['id', 'email', 'name', 'role'] });
     //const user = await User.findByPk(req.user.sub, { attributes : ['id', 'email', 'name', 'role', 'deleted_at', 'this_column_does_not_exist'] });
 
-    if (!user || user.deleted_at){
+    if (!user){
         return res.status(401).json({error : 'Account Unavailable'});
     }
         
