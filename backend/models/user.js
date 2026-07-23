@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -12,6 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+
+    async checkPassword(plainPassword){
+      return bcrypt.compare(plainPassword, this.password_hash);
+    }
+
+    static async register({email, password, name}){
+      const normalizedEmail = email.trim().toLowerCase();
+
+      const existing = await User.findOne({where: {email: normalizedEmail}});
+
+      if(existing){
+        const err = new Error('Email already registered');
+        err.status = 409;
+        throw err;
+      }
+
+      const password_hash = await bcrypt.hash(password, 10);
+      return User.create({email: normalizedEmail, password_hash, name, role: 'user'});
     }
   }
 
