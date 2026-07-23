@@ -15,12 +15,14 @@ router.post('/register', asyncHandler(async (req, res) => {
         return res.status(400).json({ error: 'Email and password (min 8 chars) required'});
     }
 
-    const existing = await User.findOne({where: { email }});
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const existing = await User.findOne({where: { email: normalizedEmail }});
     if (existing) return res.status(409).json({ error: 'Email already registered'});
 
     const password_hash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({email, password_hash, name, role: 'user'});
+    const user = await User.create({email: normalizedEmail, password_hash, name, role: 'user'});
 
     //NEVER send password_hash back
     res.status(201).json({id: user.id, email: user.email, name: user.name});
@@ -31,7 +33,8 @@ router.post('/login', asyncHandler(async (req,res) => {
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({where: { email }});
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({where: { email: normalizedEmail }});
 
     const ok = user && (await bcrypt.compare(password, user.password_hash));
     if (!ok) return res.status(401).json({error: 'Invalid email or password'});

@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+
   User.init({
     email: DataTypes.STRING,
     password_hash: DataTypes.STRING,
@@ -23,8 +25,16 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     defaultScope: {
-      where: {deleted_at : null}
+      where: { deleted_at: null }
+    },
+    hooks: {
+      beforeValidate: (user) => {
+        if (user.email) {
+          user.email = user.email.trim().toLowerCase();
+        }
+      }
     }
   });
+
   return User;
 };
