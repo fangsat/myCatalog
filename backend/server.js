@@ -56,19 +56,36 @@ app.use('/api/products', require('./routes/products'));
 // Me routes
 app.use('/api/me', require('./routes/me'));
 
+// Sentry's error handler must be registered BEFORE our own errorHandler below.
+// It works like a security camera, not a receptionist: it silently captures
+// and reports the error to the Sentry dashboard, then automatically calls
+// next(err) internally to pass the same error further down the chain.
+// It never sends an HTTP response itself - that's still our job below.
+// If this were placed AFTER errorHandler instead, errorHandler would already
+// have sent a response and ended the chain, so Sentry would never see the error at all.
 Sentry.setupExpressErrorHandler(app);
 
 // ======================
-// 5. START THE SERVER
+// 5. CENTRALIZED ERROR HANDLER
+// ======================
+// Must be defined with exactly 4 parameters (err, req, res, next) so Express
+// recognizes it as error-handling middleware, not a normal route/middleware.
+// Must be registered AFTER every route and after Sentry.setupExpressErrorHandler,
+// since Express only routes errors to handlers registered after the point of failure.
+
+//Error Station
+function errorHandler(err, req, res, next) {
+    console.error(err);
+    res.status(err.status || 500).json({error:  err.message || 'Something went wrong' });
+}
+
+app.use(errorHandler);
+
+// ======================
+// 6. START THE SERVER
 // ======================
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`API listening on http://localhost:${PORT}`);
 });
 
-
-// neon string: postgresql://neondb_owner:npg_rBR3b6UHndML@ep-silent-king-aocqt7bz.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
-// local postgres string: DATABASE_URL=postgresql://russellfang@localhost:5432/myCatalog
-
-
-// new neon string: postgresql://neondb_owner:npg_swneSQE9kO5K@ep-sparkling-boat-azngby6y.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
