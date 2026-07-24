@@ -1,14 +1,8 @@
 'use client';
 import { useEffect, useState } from "react";
 import Link from 'next/link';
+import { User } from '@/lib/types';
 import { currentUser, logout } from "@/lib/auth";
-
-interface User {
-    id: number;
-    email: string;
-    name: string;
-    role: string;
-}
 
 export default function Header() {
     const [user, setUser] = useState<User | null>(null);

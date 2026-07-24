@@ -3,16 +3,8 @@ import {useState, useEffect} from 'react';
 
 import {api} from '@/lib/api';
 import {formatIDR} from '@/lib/format';
+import { Product } from '@/lib/types';
 
-interface Product{
-    id: number;
-    name: string;
-    description: string;
-    base_price: number;
-    is_active: boolean;
-    createdAt: string;
-    updatedAt: string;
-}
 
 export default function ProductsPage() {
     const[products, setProducts] = useState <Product[] | null>(null);
