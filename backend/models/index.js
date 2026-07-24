@@ -1,5 +1,17 @@
 'use strict';
 
+// NOTE: Column naming in this database is not fully consistent.
+// Most fields are snake_case (password_hash, base_price, deleted_at),
+// but createdAt/updatedAt were created as camelCase in the original
+// migrations. Sequelize's `underscored: true` option would auto-map
+// camelCase model fields to snake_case columns globally - but turning
+// it on here would break every query, since createdAt/updatedAt don't
+// actually follow that convention in the real database.
+// Deliberate tradeoff: each model declares its snake_case fields
+// explicitly instead of relying on a global convention. Not fixed,
+// just documented, since correcting it would require an actual
+// migration renaming real database columns.
+
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
