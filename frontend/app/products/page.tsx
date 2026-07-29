@@ -34,9 +34,9 @@ export default function ProductsPage() {
     // }, []);
 
     useEffect(() => {
-        setProducts(null);
-        setError(null);
         const loadProducts = async () => {
+            setProducts(null);
+            setError(null);
             try {
                 const qs = new URLSearchParams();
                 if(q) qs.set('q', q);
