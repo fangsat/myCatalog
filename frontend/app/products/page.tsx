@@ -1,13 +1,12 @@
 'use client';
-import {useState, useEffect } from 'react';
+import {useState, useEffect, Suspense} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import {api} from '@/lib/api';
 import {formatIDR} from '@/lib/format';
 import { Product, Category } from '@/lib/types';
 
-
-export default function ProductsPage() {
+function ProductsPageContent() {
     const[products, setProducts] = useState <Product[] | null>(null);
     const[categories, setCategories] = useState <Category[]>([]);
     const[error, setError] = useState <string | null>(null);
@@ -98,5 +97,13 @@ export default function ProductsPage() {
                 ))}
             </ul>
         </main>
+    );
+}
+
+export default function ProductsPage() {
+    return(
+        <Suspense fallback={<main><p>Loading products...</p></main>}>
+            <ProductsPageContent />
+        </Suspense>
     );
 }
