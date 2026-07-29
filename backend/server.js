@@ -56,6 +56,9 @@ app.use('/api/products', require('./routes/products'));
 // Me routes
 app.use('/api/me', require('./routes/me'));
 
+// Categories routes
+app.use('/api/categories', require('./routes/categories'));
+
 // Sentry's error handler must be registered BEFORE our own errorHandler below.
 // It works like a security camera, not a receptionist: it silently captures
 // and reports the error to the Sentry dashboard, then automatically calls
